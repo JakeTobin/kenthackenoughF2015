@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='Python-Sample-Application',
+    name='thePartyButton',
     version='0.0.1',
-    author='Uber Engineering',
-    author_email='developer@uber.com',
+    author='KHEf2015',
+    author_email='wbdelp@yahoo.com',
     packages=find_packages(),
-    description='Python sample application',
+    description='An IOT button to start off any party and schedule an uber for a safe trip downtown',
 )
