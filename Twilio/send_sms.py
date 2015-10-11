@@ -1,5 +1,5 @@
 from twilio.rest import TwilioRestClient
-import datetime 
+from random import randint
 import time
 
 # Accound SID and Authentication token
@@ -8,41 +8,51 @@ auth_token  = "cd946105ffc78ef8341d40a633dcb09d"
 client = TwilioRestClient(account_sid, auth_token)
 
 #send poll
-partiers = ["+16142035285", "+17244949644","+14404872954",]
+partiers = ["+16142035285", "+17244949644","+14404872954","+13308089943",]
+
+partyPlaces = ["Patty's Pub","The World's End", "Yer Mum's Place",]
+
+placesStr = ""
+for i in range(len(partyPlaces)):
+	placesStr += "%s. %s \n" %(i+1,partyPlaces[i])
+
+placesStr = "Yo it's party time! Where should we go?\n" + placesStr
 
 for peeps in partiers:
 	message = client.messages.create(to=peeps, from_="+17245082021",
-                                     body="\n\nYo it's party time! Where should we go?\n1. Patty's Pub\n2. The World's End\n3. Yer mums place\n4. I'm lame and can't go")
+                                     body=placesStr)
 
 #Makes a list of SMSs
 SMS = client.sms.messages.list(To="+17245082021")
 
-#Only necessary to see what is being retrieved
-#for i in range (0, len(SMS)):
-#	print SMS[i].body
-#print "\n"
+def deleteSms(smsList):
+	tmp = []
+	for i in smsList:
+		tmp.append(i.sid)
+		print i.sid
 
-#Store length of old message list before overwriting
-qtyOld = len(SMS)	
+	for i in tmp:
+		client.messages.delete(i)
+	print len(smsList)
+deleteSms(SMS)
 
 #Wait for partier response
-time.sleep(20)
+time.sleep(10)
 
 #Get updated SMS list
 SMS = client.sms.messages.list(To="+17245082021")
-#Get the number of new SMSs
-quantity = len(SMS) - qtyOld
+
 
 votes = [0,0,0]
 
-for i in range(0, quantity):
+for i in range(0, len(SMS)):
+
 	print SMS[i].body
-	if(SMS[i].body == '1'):
-		votes[0] += 1
-		print 'added\n'
-	if(SMS[i].body == '2'):
-		votes[1] += 1
-		print 'added\n'
-	if(SMS[i].body == '3'):
-		votes[2] += 1
-		print 'added\n'
+	votes[int(SMS[i].body)-1] += 1
+	print votes
+
+destination = "We're going to: " + partyPlaces[votes.index(max(votes))]
+
+for peeps in partiers:
+	message = client.messages.create(to=peeps, from_="+17245082021",
+                                     body=destination)
