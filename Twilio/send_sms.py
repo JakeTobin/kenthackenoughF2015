@@ -8,7 +8,10 @@ auth_token  = "cd946105ffc78ef8341d40a633dcb09d"
 client = TwilioRestClient(account_sid, auth_token)
 
 #send poll
-message = client.messages.create(to="+17244949644", from_="+17245082021",
+partiers = ["+16142035285", "+17244949644","+14404872954",]
+
+for peeps in partiers:
+	message = client.messages.create(to=peeps, from_="+17245082021",
                                      body="\n\nYo it's party time! Where should we go?\n1. Patty's Pub\n2. The World's End\n3. Yer mums place\n4. I'm lame and can't go")
 
 #Makes a list of SMSs
