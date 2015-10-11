@@ -8,6 +8,7 @@ import time
 import os
 import signal
 import requests
+import httplib, urllib
 import json
 from twilio.rest import TwilioRestClient
 from random import randint
@@ -100,9 +101,24 @@ def getTextPoll():
 		                                body=destination)
 	print "Sent Results"
 
-sendTextPoll()
-time.sleep(15)
-getTextPoll()
+#PEBBLE AND WATCH FUNCTIONALITY
+def notifyWatches(message):
+	conn = httplib.HTTPSConnection("api.pushover.net:443")
+	conn.request("POST", "/1/messages.json",
+		urllib.urlencode({
+			"token": "awinwWShGff3mMgtcS2AL6eACEaBRF",
+			"user": "uKQwc95wPBWVXnBuzWRk1NQy1DA7DY",
+			"message": message,
+		}), { "Content-type": "application/x-www-form-urlencoded" })
+	conn.getresponse() 
+	print "Watch notified with code"
+
+
+#sendTextPoll()
+#time.sleep(15)
+#getTextPoll()
+notifyWatches("AWhattup Bitch")
+
 testUberProducts()
 
 
