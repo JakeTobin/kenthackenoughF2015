@@ -1,0 +1,24 @@
+{ uri: 'https://api.spark.io/v1/webhooks',
+  method: 'POST',
+  json: true,
+  form:
+  { event: 'twilio',
+    url: 'https://api.twilio.com/2010-04-01/Accounts/ACCOUNT_SID/Messages',
+    deviceid: undefined,
+    access_token: 'ACCESS_TOKEN',
+    requestType: 'POST',
+    headers: undefined,
+    json: undefined,
+    query: undefined,
+    auth:
+    { username: 'ACCOUNT_SID',
+      password: 'AUTH_TOKEN' },
+      mydevices: true,
+      form:
+      { From: 'FROM_TWILIO_NUMBER',
+        To: 'TO_NUMBER',
+        Body: '{{SPARK_EVENT_VALUE}}',
+        MediaUrl: 'https://dl.dropboxusercontent.com/u/10931735/big_spark-mark-400px.png'
+        }
+      }
+    }
